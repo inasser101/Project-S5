@@ -8,6 +8,7 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include "utils.h"
 
 
 
@@ -18,7 +19,7 @@ using namespace std;
 #ifdef _MSC_VER
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
-int get_file_size(std::string filename) // path to file
+int get_file_size(const char* filename) // path to file
 {
 	int number_of_lines = 0;
 	std::string line;
@@ -29,16 +30,16 @@ int get_file_size(std::string filename) // path to file
 	return number_of_lines;
 }
 //lecture en ligne fichier txt, si binaire on doit reprendre cette partie
-vector<double> download_datas(string filename){
+vector<double> download_datas(const char* filename){
 	int size;
-	size = get_file_size("\Nikkei_index_1984_2010.dat");
+	size = get_file_size(filename);
 	cout << size << endl;
 	int i = 0;
 	int dates[6819];
 	double cr;
 	vector<double> pt;
 	FILE * pFile;
-	pFile = fopen("\Nikkei_index_1984_2010.dat", "r");
+	pFile = fopen(filename, "r");
 
 	while (i<size) {
 

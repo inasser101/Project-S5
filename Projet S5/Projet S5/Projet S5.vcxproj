@@ -111,10 +111,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AR.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Novas.cpp" />
+    <ClCompile Include="novasParameters.cpp" />
+    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AR.h" />
+    <ClInclude Include="Novas.h" />
+    <ClInclude Include="novasParameters.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Nikkei_index_1984_2010.dat" />

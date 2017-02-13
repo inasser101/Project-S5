@@ -1,8 +1,10 @@
+#pragma
 #include <iostream>
 #include <vector>
 #include <math.h>
 #include <stdlib.h>
 #include <algorithm>
+#include "Novas.h"
 
 
 
@@ -41,27 +43,23 @@ double estimateurVariance(vector<double> &Y) {
 	double y = 0;
 	for (int i(0); i<Y.size(); ++i)
 	{
-		y = y + pow(T[i], 2);
+		y = y + pow(Y[i], 2);
 	}
 	return y / Y.size();
 
 }
 
 
-struct novasParameters {
-	double alpha;
-	double a;
-	int p;
-};
 
 
-novasParameters novasAlgorithm(vector<double> &Y) {
+void novasAlgorithm(vector<double> &Y,novasParameters *P) {
 
 	double s_carre, Kurt = 0;
 	s_carre = estimateurVariance(Y);
 	vector<double> w(Y.size());
 	int k,p = 0;
 	double differenceOriginal,difference,keep;
+
 	for (int i(0); i < Y.size(); i++)
 	{
 		w[i + p] = Y[i + p] / sqrt(1 / (p + 1)*pow(Y[i + p], 2));
@@ -81,8 +79,6 @@ novasParameters novasAlgorithm(vector<double> &Y) {
 			keep=p;
 		differenceOriginal = difference;
 	}
-	novasParameters P;
-	P.alpha = 0; P.a = 1 / (keep + 1); P.p = keep;
-	return P;
+	(*P).alpha = 0; (*P).a = 1 / (keep + 1);(*P).p = keep;
 }
 
