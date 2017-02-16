@@ -47,11 +47,7 @@ vector<double> download_datas(const char* filename){
 		pt.push_back(cr);
 		i++;
 	}
-	cout << i;
-	for (int i = 0; i < pt.size(); i++) {
-		cout << pt[i] << " ";
-	}
-	cout << endl;
+	
 	return pt;
 	}
 
@@ -110,14 +106,16 @@ double median(vector<double> &element ) {
 /////////////////////////////////////////AR/////////////////////////////////////////
 void ForwardLinearPrediction(vector<double> &coeffs, const vector<double> &x)
 {
+	cout << "	proceeding the check " << endl;
+
 	// GET SIZE FROM INPUT VECTORS
 	size_t N = x.size() - 1;
 	size_t m = coeffs.size();
 	// INITIALIZE R WITH AUTOCORRELATION COEFFICIENTS
 	vector<double> R(m + 1, 0.0);
-	for (size_t i = 0; i <= m; i++)
+	for (size_t i = 0; i < m; i++)
 	{
-		for (size_t j = 0; j <= N - i; j++)
+		for (size_t j = 0; j < N - i; j++)
 		{
 			R[i] += x[j] * x[j + i];
 		}
@@ -132,13 +130,13 @@ void ForwardLinearPrediction(vector<double> &coeffs, const vector<double> &x)
 	{
 		// COMPUTE LAMBDA
 		double lambda = 0.0;
-		for (size_t j = 0; j <= k; j++)
+		for (size_t j = 0; j < k; j++)
 		{
 			lambda -= Ak[j] * R[k + 1 - j];
 		}
 		lambda /= Ek;
 		// UPDATE Ak
-		for (size_t n = 0; n <= (k + 1) / 2; n++)
+		for (size_t n = 0; n < (k + 1) / 2; n++)
 		{
 			double temp = Ak[k + 1 - n] + lambda * Ak[n];
 			Ak[n] = Ak[n] + lambda * Ak[k + 1 - n];
@@ -166,7 +164,7 @@ vector<double> wchapeau(int q, int n, vector<double>&W) {
 		}
 	}
 	// CALCULATE AND DISPLAY ERROR
-	double error = 0.0;
+	/*double error = 0.0;
 	for (size_t i = m; i < predicted.size(); i++)
 	{
 		printf("Index: %.2d / Original: %.6f / Predicted: %.6f\n", i, W[i], predicted[i]);
@@ -174,6 +172,29 @@ vector<double> wchapeau(int q, int n, vector<double>&W) {
 		error += delta * delta;
 	}
 	printf("Forward Linear Prediction Approximation Error: %f\n", error);
+	*/
+	return predicted;
+
+}
+
+double wchapeau_n(int q, int n, vector<double>&W) {
+
+	cout << "coeff size prob 1 passed,checking 2 ..."<< endl;
+	vector<double> coeffs(q, 0.0);
+	cout << "coeff size prob 2 passed,checking 3..." << endl;
+	ForwardLinearPrediction(coeffs, W);
+	cout << "coeff size prob 3 passed" << endl;
+	// PREDICT DATA LINEARLY
+	double predicted;
+	int m =W.size();
+	cout << "coeff size min with w  " << m<< endl;
+	predicted = 0.0;
+		for (int j (0); j < m; j++)
+		{
+			predicted += coeffs[j] * W[n - j];
+		}
+		cout << "Ln 196 utils.cpp";
+	// CALCULATE AND DISPLAY ERROR
 	return predicted;
 
 }

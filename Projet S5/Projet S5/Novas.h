@@ -26,7 +26,7 @@ double kurtosis(vector<double> const & Y);
 
 double estimateurVariance(vector<double>& Y);
 
-void novasAlgorithm(vector<double>& Y, novasParameters * P);
+vector<double> novasAlgorithm(vector<double>& Y, novasParameters * P);
 
 
 

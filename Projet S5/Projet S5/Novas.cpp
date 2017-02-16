@@ -10,31 +10,35 @@
 
 using namespace std;
 
-double mean(vector<double> const& tab)
+long double mean(vector<double> &tab,int p) 
 {
-	double a(0);
-
-	for (int i(0); i<tab.size(); ++i)
+	long double a=0;
+	int i;
+	int n = tab.size();
+	for (i=1; i <n-p; i++)
 	{
 		a += tab[i];
+		//cout<<"tab["<<i<<"]	:" << tab[i]<< endl;
 	}
-
-	a = a / tab.size();
+	//cout <<"a	"<< a;
 	return a;
 }
 
 
-double kurtosis(vector<double> const& Y)
+long double kurtosis(vector<double> & Y,int p)
 {
-	double n(0);
-	double d(0);
-	double m = mean(Y);
-	for (int i(0); i<Y.size(); ++i)
+	long double n(0);
+	long double d(0);
+	long double m = mean(Y,p);
+	//cout << "mean:  " << m;
+	for (int i(1); i<Y.size(); i++)
 	{
-		n = n + pow((Y[i] - m), 4);
-		d = d + pow((Y[i] - m), 2);
+		n = n + (long double)pow((Y[i] - m), 4);
+		d = d + (long double)pow((Y[i] - m), 2);
+		//cout << " first 1:" << (long double)pow((Y[i] - m), 4);
+		//cout << " second 1:" << d;
 	}
-	return Y.size()*n / pow(d, 2);
+	return (long double)Y.size()*n / (long double)pow(d, 2);
 }
 
 
@@ -49,36 +53,79 @@ double estimateurVariance(vector<double> &Y) {
 
 }
 
+int  min_element(vector<double> &Y)
+{
+	int t=0;
+	double min = Y[0];
+	for (int i(1); i < Y.size(); i++) {
+		if (Y[i]<min){
+			min = Y[i];
+			t = i;
+		}
+	}
+	return t;
+}
 
 
+vector<double> novasAlgorithm(vector<double> &Y,novasParameters *P) {
 
-void novasAlgorithm(vector<double> &Y,novasParameters *P) {
-
-	double s_carre, Kurt = 0;
+	double s_carre;
+	long double Kurt=0.0;
 	s_carre = estimateurVariance(Y);
 	vector<double> w(Y.size());
-	int k,p = 0;
-	double differenceOriginal,difference,keep;
-
-	for (int i(0); i < Y.size(); i++)
+	int k,stop,p = 0;
+	long double differenceOriginal,difference,keep=0;
+	cout << "	" << "novas Algorithm w size :" << w.size() << endl;
+	for (int i(0); i < Y.size()-p; i++)
 	{
 		w[i + p] = Y[i + p] / sqrt(1 / (p + 1)*pow(Y[i + p], 2));
 	}
-	differenceOriginal = labs(3 - Kurt);
-	for (k = 0; k < Y.size();k++){
-		p = p + 1;
-		for (int i(0); i < Y.size(); i++)
+	differenceOriginal = abs(3 - Kurt);
+	//cout <<" differenceOriginal before the main "<< differenceOriginal << endl;
+	stop = 1;
+	vector<double> kur;
+	while (p < w.size() && stop != 0) {
+		//cout << " step : " << p;
+		for (int i(0); i < Y.size() - p; i++)
 		{
-			w[i + p] = Y[i + p] / sqrt(1 / (p + 1)*pow(Y[i + p], 2));
+			
+			w[i + p] = Y[i + p] / sqrt(1 /( (p + 1)*pow(Y[i + p], 2)));
+			//cout << "    "<< 1/sqrt(1 / ((p + 1)*pow(Y[i + p], 2)));
+			//cout << "	" << Y[i + p] / sqrt(1 / ((p + 1)*pow(Y[i + p], 2)));
 		}
-		Kurt = kurtosis(w);
-		difference = labs(3 - Kurt);
-		if (min(difference, differenceOriginal) == differenceOriginal)
-			keep = p-1;
+		Kurt = kurtosis(w,p);
+		
+		difference = abs(3 - Kurt);
+		kur.push_back(difference);
+		//cout << "  des difference : " << difference<<" et "<< differenceOriginal;
+		/*if (min(difference, differenceOriginal) == differenceOriginal)
+			{
+				
+			keep = p - 1;}
 		else 
 			keep=p;
+			*/
+
 		differenceOriginal = difference;
+		//cout << " Kurt : " << Kurt;
+		//cout << "	"<< " the p order:" << keep << endl;
+
+		if (p == Y.size()) { stop = 0; }
+		if (p < Y.size()) { p = p + 1; }
+		
 	}
+	cout << "checkpoint 3" << endl;
+	keep = min_element(kur);
+	vector<double> ww(Y.size()-keep);
+	for (int i(0); i < Y.size() - p; i++)
+	{
+		ww[i + p] = Y[i + p] / sqrt(1 / (p + 1)*pow(Y[i + p], 2));
+	}
+	cout << endl; cout << endl; cout << endl;
+	
+	cout << "	" << " the p order:" << keep << endl;
 	(*P).alpha = 0; (*P).a = 1 / (keep + 1);(*P).p = keep;
+	cout << "Novas succeed quit checkpoint 3" << endl;
+	return ww;
 }
 

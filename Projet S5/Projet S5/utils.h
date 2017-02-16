@@ -23,6 +23,8 @@ void ForwardLinearPrediction(vector<double>& coeffs, const vector<double>& x);
 
 vector<double> wchapeau(int q, int n, vector<double>& W);
 
+double wchapeau_n(int q, int n, vector<double>&W);
+
 double muFonctorCaseOne(int p, int q, int n, vector<double>& W, double ao);
 
 double muFonctorCaseTwo(int p, int q, int n, vector<double>& W, double ao);
