@@ -1,5 +1,4 @@
-﻿  utils.cpp
-c:\users\issam-msi-note\desktop\project-s5\projet s5\projet s5\utils.cpp(250): warning C4267: 'initialisation' : conversion de 'size_t' en 'short', perte possible de données
-c:\users\issam-msi-note\desktop\project-s5\projet s5\projet s5\utils.cpp(259): warning C4244: '+=' : conversion de 'double' en 'float', perte possible de données
+﻿  main.cpp
+c:\users\issam-msi-note\desktop\project-s5\projet s5\projet s5\main.cpp(15): warning C4129: 'N' : caractère de séquence d'échappement non reconnu
   Projet S5.vcxproj -> C:\Users\Issam-MSI-Note\Desktop\Project-S5\Projet S5\Debug\Projet S5.exe
   Projet S5.vcxproj -> C:\Users\Issam-MSI-Note\Desktop\Project-S5\Projet S5\Debug\Projet S5.pdb (Partial PDB)

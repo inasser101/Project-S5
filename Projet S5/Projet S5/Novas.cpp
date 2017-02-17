@@ -114,12 +114,18 @@ vector<double> novasAlgorithm(vector<double> &Y,novasParameters *P) {
 		if (p < Y.size()) { p = p + 1; }
 		
 	}
-	cout << "checkpoint 3" << endl;
+	cout << "checkpoint 3 #### choice of p-order is: " << keep << endl;
 	keep = min_element(kur);
+	double temp1 = 0;
 	vector<double> ww(Y.size()-keep);
-	for (int i(0); i < Y.size() - p; i++)
+
+	for (int t(keep+1); t < Y.size(); t++)
 	{
-		ww[i + p] = Y[i + p] / sqrt(1 / (p + 1)*pow(Y[i + p], 2));
+		for (int i(0); i <= keep; i++) {
+			temp1 += pow(Y[t-i], 2) / (keep + 1);
+		}
+		ww[t-keep-1] =Y[t]/sqrt(temp1);
+		cout << "    the real w : " << ww[t-keep-1] <<endl;
 	}
 	cout << endl; cout << endl; cout << endl;
 	
@@ -129,3 +135,18 @@ vector<double> novasAlgorithm(vector<double> &Y,novasParameters *P) {
 	return ww;
 }
 
+
+
+double A_n(vector<double> &Y, int p) {
+
+	double s_carre;
+	long double Kurt = 0.0;
+	s_carre = estimateurVariance(Y);
+	double A_n=0.0;
+	
+		for (int i(1); i <= p; i++) {
+			A_n += pow(Y[Y.size() - i], 2) / (p + 1);
+		}
+
+	return A_n;
+}

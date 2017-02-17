@@ -57,16 +57,18 @@ vector<double> download_datas(const char* filename){
 
 vector<double> return_series(vector<double> dataLoad) {
 	vector<double> Y;
-	vector<double>::iterator it;
-	it = dataLoad.begin();
+	//vector<double>::iterator it;
+	//it = dataLoad.begin();
 	//j'ai considéré qu'on calcul que les Y(i), i >=1, si les input démare à 0 par exemple
 	double start;
-	start = *it;
-	it++;
-	for (it = dataLoad.begin();it != dataLoad.end();it++)
+	start = dataLoad[0];
+	//it++;
+	for (int i(1);i<dataLoad.size();i++)
 	{
-		Y.push_back(log(*it)-log(start));
-		start = *it;
+		//Y.push_back(log(*it)-log(start));
+		Y.push_back(log(dataLoad[i]) - log(start));
+		//start = *it;
+		start = dataLoad[i];
 	}
 	return Y;
 }
@@ -103,6 +105,21 @@ double median(vector<double> &element ) {
 
 }
 
+long double median(vector<long double> &element) {
+	size_t size = element.size();
+
+	sort(element.begin(), element.end());
+
+	if (size % 2 == 0)
+	{
+		return (element[size / 2 - 1] + element[size / 2]) / 2;
+	}
+	else
+	{
+		return element[size / 2];
+	}
+
+}
 /////////////////////////////////////////AR/////////////////////////////////////////
 void ForwardLinearPrediction(vector<double> &coeffs, const vector<double> &x)
 {
@@ -187,11 +204,11 @@ double wchapeau_n(int q, int n, vector<double>&W) {
 	// PREDICT DATA LINEARLY
 	double predicted;
 	int m =W.size();
-	cout << "coeff size min with w  " << m<< endl;
+	cout << "coeff size min with w  " << m<< "	" << coeffs.size()<< endl;
 	predicted = 0.0;
 		for (int j (0); j < m; j++)
 		{
-			predicted += coeffs[j] * W[n - j];
+			predicted += coeffs[j] * W[m - j-1];
 		}
 		cout << "Ln 196 utils.cpp";
 	// CALCULATE AND DISPLAY ERROR
@@ -204,13 +221,16 @@ double muFonctorCaseOne(int p,int q, int n, vector<double>& W,double ao) {
 	//vector<double> wchap;
 	//wchap = wchapeau(q, n, W);
 	//create the vector described in 10.25
-	vector<double> elements(n - p, 0.0);
+	vector<long double> elements(n - p, 0.0);
 	int i;
-	for (i = 0; i < n-p; i++)
+	for (i = 0; i < n-p-1; i++)
 	{
-			elements[i] = W[p + 1 + i] * W[p + 1 + i]/(1-ao*W[p + 1 + i] * W[p + 1 + i]);
-		
+			elements[i] =(long double) W[1 + i] * W[1 + i]/ ((long double)(1-ao*W[1 + i] * W[1 + i]));
+			cout << "W[1 + i] * W[1 + i] =  " << W[1 + i] * W[1 + i] ;
+			cout << "   (1-ao*W[1 + i] * W[1 + i]) =  " << (1 - ao*W[1 + i] * W[1 + i]) << endl;
 	}
+	sort(elements.begin(),elements.end());
+	cout << "the first mu" << median(elements) << endl;
 return median(elements);
 }
 

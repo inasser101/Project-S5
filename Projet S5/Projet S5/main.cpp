@@ -30,8 +30,10 @@ int main() {
 	cout << "Checkpoint  5" << endl;
 	cout << "n" << n;
 	double mu_1 = muFonctorCaseOne(P->p, n - 1, n, w, P->a);
-	double mu_2 = muFonctorCaseTwo(P->p, n - 1, n, w, P->a);
-	cout << mu_1 << mu_2 << endl;
+	cout <<  endl;
+	cout << "predicted Y_n_+_1 " << sqrt(mu_1)*A_n(returns, P->p);
+	//double mu_2 = muFonctorCaseTwo(P->p, n - 1, n, w, P->a);
+	//cout << mu_1 << mu_2 << endl;
 
 	system("pause");
 	return 0;

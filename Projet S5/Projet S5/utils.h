@@ -18,6 +18,7 @@ vector<double> download_datas(const char* filename);
 vector<double> return_series(vector<double> dataLoad);
 
 double median(vector<double>& element);
+long double median(vector<long double>& element);
 
 void ForwardLinearPrediction(vector<double>& coeffs, const vector<double>& x);
 

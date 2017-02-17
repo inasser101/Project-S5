@@ -20,13 +20,15 @@ public:
 	double a;
 	int p;
 };
-double mean(vector<double> const & tab);
+long double mean(vector<double>  & tab,int p);
 
-double kurtosis(vector<double> const & Y);
+long double kurtosis(vector<double> const & Y,int p);
 
 double estimateurVariance(vector<double>& Y);
 
 vector<double> novasAlgorithm(vector<double>& Y, novasParameters * P);
+
+double A_n(vector<double>& Y, int p);
 
 
 
