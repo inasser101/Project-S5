@@ -67,11 +67,28 @@ vector<double> return_series(vector<double> dataLoad) {
 	{
 		//Y.push_back(log(*it)-log(start));
 		Y.push_back(log(dataLoad[i]) - log(start));
+		cout <<"Y["<<i<<"]    =         " << (log(dataLoad[i]) - log(start)) << endl;
 		//start = *it;
 		start = dataLoad[i];
 	}
 	return Y;
 }
+
+vector<double> time_series(int T) {
+	vector<double> Y;
+	//vector<double>::iterator it;
+	//it = dataLoad.begin();
+	//j'ai considéré qu'on calcul que les Y(i), i >=1, si les input démare à 0 par exemple
+	//it++;
+	for (int i(1); i<T; i++)
+	{
+		//Y.push_back(log(*it)-log(start));
+		Y.push_back(i);
+	}
+	return Y;
+}
+
+
 
 // transformation toward i i d Ness
 
@@ -110,15 +127,10 @@ long double median(vector<long double> &element) {
 
 	sort(element.begin(), element.end());
 
-	if (size % 2 == 0)
 	{
-		return (element[size / 2 - 1] + element[size / 2]) / 2;
+		return (element[size / 2]) / 2;
 	}
-	else
-	{
-		return element[size / 2];
-	}
-
+	
 }
 /////////////////////////////////////////AR/////////////////////////////////////////
 void ForwardLinearPrediction(vector<double> &coeffs, const vector<double> &x)
@@ -196,11 +208,11 @@ vector<double> wchapeau(int q, int n, vector<double>&W) {
 
 double wchapeau_n(int q, int n, vector<double>&W) {
 
-	cout << "coeff size prob 1 passed,checking 2 ..."<< endl;
+	//cout << "coeff size prob 1 passed,checking 2 ..."<< endl;
 	vector<double> coeffs(q, 0.0);
-	cout << "coeff size prob 2 passed,checking 3..." << endl;
+	//cout << "coeff size prob 2 passed,checking 3..." << endl;
 	ForwardLinearPrediction(coeffs, W);
-	cout << "coeff size prob 3 passed" << endl;
+	//cout << "coeff size prob 3 passed" << endl;
 	// PREDICT DATA LINEARLY
 	double predicted;
 	int m =W.size();
@@ -225,13 +237,29 @@ double muFonctorCaseOne(int p,int q, int n, vector<double>& W,double ao) {
 	int i;
 	for (i = 0; i < n-p-1; i++)
 	{
-			elements[i] =(long double) W[1 + i] * W[1 + i]/ ((long double)(1-ao*W[1 + i] * W[1 + i]));
-			cout << "W[1 + i] * W[1 + i] =  " << W[1 + i] * W[1 + i] ;
-			cout << "   (1-ao*W[1 + i] * W[1 + i]) =  " << (1 - ao*W[1 + i] * W[1 + i]) << endl;
+			elements[i] =(long double) W[1 + i] * W[1 + i]/ ((long double)(1-W[1 + i] * W[1 + i]/(p+1)));
+			//cout << "W[1 + i] * W[1 + i] =  " << W[1 + i] * W[1 + i] ;
+			//cout << "   (1-ao*W[1 + i] * W[1 + i]) =  " << 1-(W[1 + i] * W[1 + i])/(p+1) << endl;
 	}
-	sort(elements.begin(),elements.end());
-	cout << "the first mu" << median(elements) << endl;
+	cout << "the first median of elements case 1 is : " << median(elements) << endl;
 return median(elements);
+//return elements[n - p - 2];
+}
+
+double volatilityCaseOne(int p, int q, int n, vector<double>& W, double ao) {
+	//vector<double> wchap;
+	//wchap = wchapeau(q, n, W);
+	//create the vector described in 10.25
+	double elements=0;
+	int i;
+	for (i = 0; i < n - p - 1; i++)
+	{
+		elements += (long double)W[1 + i] * W[1 + i] / ((long double)(1 - ao*W[1 + i] * W[1 + i]));
+		cout << "W[1 + i] * W[1 + i] =  " << W[1 + i] * W[1 + i];
+		cout << "   (1-ao*W[1 + i] * W[1 + i]) =  " << (1 - ao*W[1 + i] * W[1 + i]) << endl;
+	}
+	cout << "the first element" << elements << endl;
+	return elements;
 }
 
 //just talked to the guy and it seems to be all good
@@ -244,13 +272,13 @@ double muFonctorCaseTwo(int p, int q, int n, vector<double>& W, double ao) {
 	vector<double> elements(n - p, 0.0);
 	int i, r;
 	r = max(p, q);
-	vector<double> e_t(n - r, 0.0);
+	vector<double> e_t;
 	for (i = 0; i < n-r; i++) {
-		e_t[i] = W[i + r] - wchap[i + r];
+		e_t.push_back( W[i ] - wchap[i+r ]);
 	}
 	for (i = 0; i < n - r; i++)
 	{
-		temp = e_t[i] + wchap[n + 1];
+		temp = e_t[i] + wchap[n-1];
 		elements[i] = temp*temp / (1 - ao*temp*temp);
 
 	}

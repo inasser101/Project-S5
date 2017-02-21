@@ -114,18 +114,19 @@ vector<double> novasAlgorithm(vector<double> &Y,novasParameters *P) {
 		if (p < Y.size()) { p = p + 1; }
 		
 	}
-	cout << "checkpoint 3 #### choice of p-order is: " << keep << endl;
+	
 	keep = min_element(kur);
+	cout << "checkpoint 3 #### choice of p-order is: " << keep << " | kurtosis - 3|  = "<<kur[keep] << endl;
 	double temp1 = 0;
 	vector<double> ww(Y.size()-keep);
-
+	cout << "Normalized return series" << endl; 
 	for (int t(keep+1); t < Y.size(); t++)
 	{
 		for (int i(0); i <= keep; i++) {
 			temp1 += pow(Y[t-i], 2) / (keep + 1);
 		}
 		ww[t-keep-1] =Y[t]/sqrt(temp1);
-		cout << "    the real w : " << ww[t-keep-1] <<endl;
+		cout << "   W[" << t-1 << "]    :        "<< ww[t-keep-1] <<endl;
 	}
 	cout << endl; cout << endl; cout << endl;
 	
